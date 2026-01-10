@@ -7,7 +7,7 @@
 template <typename T>
 class Sington
 {
-
+	// 你好 你是谁
 public:
 	static std::shared_ptr<T> getInstance()
 	{
