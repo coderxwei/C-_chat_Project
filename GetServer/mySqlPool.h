@@ -97,7 +97,8 @@ class mySqlPool
 
 	}
 
-
+	//返回新的连接
+	void  retConnection(std::shared_ptr<sqlConnection> conn);
 
 private:
 	// 连接池的大小
