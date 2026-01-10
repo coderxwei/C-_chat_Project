@@ -69,9 +69,6 @@ LogicSystem::LogicSystem()
 			const  std::string jsonstr = retbody.toStyledString();	
 			beast::ostream(connection->response_.body()) << jsonstr;
 			return;
-
-
-
 		});
 }
 
