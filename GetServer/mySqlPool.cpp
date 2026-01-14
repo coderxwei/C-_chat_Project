@@ -1,11 +1,7 @@
 #include "mySqlPool.h"
-bool mySqlPool::retConnection(long long  timestamp)
-{
 
+#include "Logging.h"
 
-
-
-}
 mySqlPool::mySqlPool(size_t poolSize, const std::string url, const std::string  user, std::string  password, const std::string scheme) :poolSize_(poolSize),
 url_(url),
 user_(user),
@@ -158,7 +154,8 @@ bool mySqlPool::retConnection(long long timestamp)
 	catch(sql::SQLException& e)
 	{
 		return false;
-
+	
+		Logging::Instance().LOG_ERROR("sql∑µªÿ ß∞‹");
 	}
 
 

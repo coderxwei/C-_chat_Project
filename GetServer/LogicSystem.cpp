@@ -62,7 +62,7 @@ LogicSystem::LogicSystem()
 			// 获取邮箱地址
 			auto email_ = srcbody["email"].asString();
 			// TODO: 通过 Grpc 调用验证码服务，发送验证码到指定邮箱
-			GetVarifyRsp response = VerifyCodeGrpc::getInstance()->GetVarifyCode(email_);
+			GetVarifyRsp response = VerifyCodeGrpc::Instance().GetVarifyCode(email_);
 			std::cout << "email is" << email_ << std::endl;
 			retbody["error"] = response.error();
 			retbody["email"] = srcbody["email"];

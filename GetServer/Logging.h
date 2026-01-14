@@ -13,7 +13,7 @@ enum class LogLevel
 	DEBUG = 0,
 	INFO = 1,
 	WARN = 2,
-	ERROR = 3
+	LOG_ERROR = 3
 };
 
 class Logging : public Sington<Logging>
@@ -35,7 +35,7 @@ public:
 	void WARN(const std::string& message);
 
 	// 打印日志 - ERROR 级别
-	void ERROR(const std::string& message);
+	void LOG_ERROR(const std::string& message);
 
 	// 设置日志级别（低于此级别的日志将不输出）
 	void setLogLevel(LogLevel level);

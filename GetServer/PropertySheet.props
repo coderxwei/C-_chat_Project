@@ -9,6 +9,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\cppsoft\mysql_connector\mysql-connector-c++-8.3.0-winx64-debug\mysql-connector-c++-8.3.0-winx64\lib64\vs14;D:\Vcpkg\vcpkg\installed\x64-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>debug\mysqlcppconn.lib;debug\mysqlcppconn8.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

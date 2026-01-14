@@ -1,6 +1,6 @@
 #include "Logging.h"
 #include <iostream>
-
+#include <ctime>
 // 初始化日志系统
 void Logging::init(const std::string& logFilePath)
 {
@@ -64,9 +64,9 @@ void Logging::WARN(const std::string& message)
 }
 
 // ERROR 级别日志
-void Logging::ERROR(const std::string& message)
+void Logging::LOG_ERROR(const std::string& message)
 {
-	log(LogLevel::ERROR, message);
+	log(LogLevel::LOG_ERROR, message);
 }
 
 // 内部日志输出函数
@@ -107,7 +107,7 @@ std::string Logging::getLevelString(LogLevel level) const
 		return "INFO";
 	case LogLevel::WARN:
 		return "WARN";
-	case LogLevel::ERROR:
+	case LogLevel::LOG_ERROR:
 		return "ERROR";
 	default:
 		return "UNKNOWN";
@@ -117,14 +117,25 @@ std::string Logging::getLevelString(LogLevel level) const
 // 获取当前时间字符串
 std::string Logging::getCurrentTime() const
 {
+	// 1. 获取当前时间点
 	auto now = std::chrono::system_clock::now();
-	auto time_t = std::chrono::system_clock::to_time_t(now);
+
+	// 2. 转换为 time_t（秒）
+	std::time_t tt = std::chrono::system_clock::to_time_t(now);
+
+	// 3. 计算毫秒
 	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
 		now.time_since_epoch()) % 1000;
 
-	std::stringstream ss;
-	ss << std::put_time(std::localtime(&time_t), "%Y-%m-%d %H:%M:%S");
-	ss << '.' << std::setfill('0') << std::setw(3) << ms.count();
+	// 4. 转换为本地时间
+	std::tm local_tm;
+	localtime_s(&local_tm, &tt);
+
+	// 5. 格式化输出
+	std::ostringstream ss;
+	ss << std::put_time(&local_tm, "%Y-%m-%d %H:%M:%S")
+		<< '.' << std::setfill('0') << std::setw(3) << ms.count();
+
 	return ss.str();
 }
 
