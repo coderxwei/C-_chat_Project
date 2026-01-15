@@ -151,12 +151,65 @@ bool mySqlPool::retConnection(long long timestamp)
 		return true;
 
 	}
-	catch(sql::SQLException& e)
+	catch (sql::SQLException& e)
 	{
 		return false;
-	
+
 		Logging::Instance().LOG_ERROR("sql返回失败");
 	}
+}
 
+
+std::unique_ptr<sqlConnection> mySqlPool::getConnection()
+{
+	std::unique_ptr<sqlConnection>  newCon;
+	//// 判断连接池是是否为空
+	//if (!pool_.empty())
+	//{
+	//	//通过加锁保证共享区资源的安全。
+	//	std::lock_guard<std::mutex> guard(mutex_);
+	//	{
+	//		
+	//		
+	//	}
+
+	//}
+
+	std::unique_lock<std::mutex> guard_(mutex_);
+	{
+		condition_.wait(guard_, [this]() {
+			if (isStop_)
+				return true;
+
+			//连接池没有停止
+			return !pool_.empty();
+
+			});
+		if (isStop_)
+		{
+			return nullptr;
+		}
+
+		newCon = std::move(pool_.front());
+		pool_.pop();
+		return newCon;
+	}
+}
+
+void  mySqlPool::close()
+{
+	isStop_ = true;
+	condition_.notify_all();
+
+}
+mySqlPool::~mySqlPool()
+{
+	std::lock_guard<std::mutex> guard(mutex_);
+	{
+		while (!pool_.empty())
+		{
+			pool_.pop();
+		}
+	}
 
 }

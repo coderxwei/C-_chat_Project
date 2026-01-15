@@ -29,11 +29,14 @@ class mySqlPool
 
 public:
 	mySqlPool(size_t poolSize, const std::string url, const std::string  user, std::string  password, const std::string scheme);
-
+	~mySqlPool();
 
 	void checkConnectionPro() ;
 	void checkConnection();
 	bool retConnection(long long timestamp);
+	std::unique_ptr<sqlConnection> getConnection();
+	void  close() ;
+	
 private:
 	// 连接池的大小
 	size_t		 poolSize_;
