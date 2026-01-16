@@ -48,20 +48,13 @@ public:
 	 * [GetServer]:配置信息
 		Port=8080
 		Host=127.0.0.1
-	 *
-	 *
-	 *
-	 *
-	 *
+	
 	 */
-
 	static 	configMgr& inst()
 	{
 		static   configMgr  cnfMgr;
 		return   cnfMgr;
 	}
-
-
 	paramInfo operator[](const  std::string& configName)
 	{
 
@@ -81,12 +74,6 @@ public:
 		this->conFigMessage_ = other.conFigMessage_;
 
 	}
-
-
-
-
-
-
 	//拷贝构造
 	configMgr(const configMgr& other)
 	{
@@ -96,9 +83,6 @@ public:
 
 
 	}
-
-	// 声明友元，允许 Sington 模板访问私有构造函数
-	//friend class Sington<configMgr>;
 
 private:
 	// 构造函数私有化（通过友元允许 Sington 访问）

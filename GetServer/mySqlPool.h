@@ -33,9 +33,10 @@ public:
 
 	void checkConnectionPro() ;
 	void checkConnection();
-	bool retConnection(long long timestamp);
+	bool reConnection(long long timestamp);
 	std::unique_ptr<sqlConnection> getConnection();
 	void  close() ;
+	bool returnConnection(std::unique_ptr<sqlConnection>con_);
 	
 private:
 	// 连接池的大小

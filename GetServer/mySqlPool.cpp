@@ -128,7 +128,7 @@ void mySqlPool::checkConnection()
 
 	}
 }
-bool mySqlPool::retConnection(long long timestamp)
+bool mySqlPool::reConnection(long long timestamp)
 {
 	try
 	{
