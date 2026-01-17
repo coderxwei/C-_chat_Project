@@ -25,7 +25,6 @@ bool mySqlDao::CheckEmail(const std::string& username, const std::string& email)
 	select  emila   form userInfo  where  email=email, name='name';
 	
 	*/
-
 	//先获得连接
 	auto   con_= pool_->getConnection();
 	try {
@@ -111,6 +110,31 @@ int  mySqlDao::RegUser(const std::string& username, const std::string& email, co
 }
 bool mySqlDao::UpdatePwd(const std::string& username, const std::string& newpasswrod)
 {
+	try {
+		auto con_ = pool_->getConnection();
+		if (con_ != nullptr)
+		{
+			std::unique_ptr<sql::PreparedStatement>pstm(con_->sql_ptr_->prepareStatement("update users set password=? from  where username=?"));
+
+			pstm->setString(1, newpasswrod);
+			pstm->setString(2, username);
+
+			int updataCount = pstm->execute();
+
+			Logging::Instance().INFO("更新密码的信息个数{updataCount} ");
+
+			pool_->returnConnection(std::move(con_));
+			return true;
+		}
+	}
+	catch (sql::SQLException& e)
+	{
+
+		Logging::Instance().INFO("更新的对象失败");
+		return false;
+
+	}
+
 
 }
 bool mySqlDao::CheckPwd(const std::string& email, const std::string& password, userInfo& userInfo)
