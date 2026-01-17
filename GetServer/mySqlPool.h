@@ -33,9 +33,11 @@ public:
 
 	void checkConnectionPro() ;
 	void checkConnection();
+	// 重新连接
 	bool reConnection(long long timestamp);
 	std::unique_ptr<sqlConnection> getConnection();
 	void  close() ;
+	// 返回连接
 	bool returnConnection(std::unique_ptr<sqlConnection>con_);
 	
 private:

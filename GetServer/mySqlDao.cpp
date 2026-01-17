@@ -16,7 +16,7 @@ mySqlDao::~mySqlDao()
 {
 	pool_->close();
 }
-bool mySqlDao::CheckEmail(const std::string& name, const std::string& email)
+bool mySqlDao::CheckEmail(const std::string& username, const std::string& email)
 {
 
 	//先查询数据库
@@ -33,8 +33,8 @@ bool mySqlDao::CheckEmail(const std::string& name, const std::string& email)
 		{
 
 			//创建sql语句并绑定
-			std::unique_ptr<sql::PreparedStatement> psmt(con_->sql_ptr_->prepareStatement("select email FROM user WHERE name=?"));
-			psmt->setString(1, name);
+			std::unique_ptr<sql::PreparedStatement> psmt(con_->sql_ptr_->prepareStatement("select email FROM users WHERE username=?"));
+			psmt->setString(1, username);
 			std::unique_ptr<sql::ResultSet> result(psmt->executeQuery());
 			// 检查返回的结果
 			while (result->next())
@@ -67,11 +67,53 @@ bool mySqlDao::CheckEmail(const std::string& name, const std::string& email)
 
 
 }
-bool mySqlDao::UpdatePwd(const std::string& name, const std::string& newpwd)
+int  mySqlDao::RegUser(const std::string& username, const std::string& email, const std::string& password)
+{
+	auto con_ = pool_->getConnection();
+	try
+	{
+		if (con_ != nullptr)
+		{
+			std::unique_ptr < sql::PreparedStatement>pstm(con_->sql_ptr_->prepareStatement("CALL reg_user(?,?,?,@result)"));
+			pstm->setString(1, username);
+			pstm->setString(2, email);
+			pstm->setString(3, password);
+			//执行sql语句
+			pstm->execute();
+			std::unique_ptr<sql::Statement>pstmResult(con_->sql_ptr_->createStatement());
+			std::unique_ptr<sql::ResultSet> res(pstmResult->executeQuery("select @result as result"));
+			if (res->next())
+			{	
+				int result = res->getInt("result");
+
+				Logging::Instance().INFO("数据库返回注册的结果");
+				pool_->returnConnection( std::move(con_));
+				return result;
+			}
+			pool_->returnConnection(std::move(con_));
+			//执行错误
+			return -1;
+			
+		}
+
+	}
+	catch (sql::SQLException e)
+
+	{	
+		//就算创建连接失败也要返回失败的连接
+		pool_->returnConnection(std::move(con_));
+		//连接是空的
+		Logging::Instance().LOG_ERROR("获取sql连接失败");
+		return -1;
+	}
+	//注册用户应该是add 添加
+	
+}
+bool mySqlDao::UpdatePwd(const std::string& username, const std::string& newpasswrod)
 {
 
 }
-bool mySqlDao::CheckPwd(const std::string& email, const std::string& pwd, userInfo& userInfo)
+bool mySqlDao::CheckPwd(const std::string& email, const std::string& password, userInfo& userInfo)
 {
 
 }
