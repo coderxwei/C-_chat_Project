@@ -45,6 +45,9 @@
     <ClCompile Include="mySqlDao.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="mySqlMgr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Global.h">
@@ -78,6 +81,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="mySqlDao.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mySqlMgr.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

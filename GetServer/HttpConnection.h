@@ -6,7 +6,6 @@
 class HttpConnection:std:: enable_shared_from_this<HttpConnection>
 {
 public:
-
     friend class LogicSystem;
 
         HttpConnection();

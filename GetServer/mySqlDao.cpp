@@ -61,10 +61,6 @@ bool mySqlDao::CheckEmail(const std::string& username, const std::string& email)
 		Logging::Instance().DEBUG("获取连接失败");
 		return false;
 	}
-
-
-
-
 }
 int  mySqlDao::RegUser(const std::string& username, const std::string& email, const std::string& password)
 {
@@ -139,5 +135,43 @@ bool mySqlDao::UpdatePwd(const std::string& username, const std::string& newpass
 }
 bool mySqlDao::CheckPwd(const std::string& email, const std::string& password, userInfo& userInfo)
 {
+
+	//检查密码是否正确
+
+	auto con_ = pool_->getConnection();
+
+	if (con_ != nullptr)
+	{
+		//进行数据库的查询
+		try
+		{
+			std::unique_ptr<sql::PreparedStatement>psmt(con_->sql_ptr_->prepareStatement("select * from user where email=?"));
+			psmt->setString(1, email);
+			std::unique_ptr<sql::ResultSet>res(psmt->executeQuery());
+			std::string  dataBase_password = "";
+			while (res->next())
+			{
+				dataBase_password = res->getString("password");
+				break;
+
+			}
+			if (password != dataBase_password)
+			{
+				Logging::Instance().LOG_ERROR("输出的密码是错误的");
+				pool_->returnConnection(std::move(con_));
+				return false;
+			}
+			userInfo.name_ = res->getString("username");
+			userInfo.email_ = res->getString("email");
+			userInfo.u_id = res->getInt("uid");
+			userInfo.password_ = dataBase_password;
+			pool_->returnConnection(std::move(con_));
+			return true;
+		}
+		catch (sql::SQLException& e)
+		{
+			Logging::Instance().DEBUG("发生了错误再检查密码的时候");
+		}
+	}
 
 }

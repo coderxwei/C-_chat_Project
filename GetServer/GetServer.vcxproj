@@ -134,6 +134,7 @@
     <ClCompile Include="Message.grpc.pb.cc" />
     <ClCompile Include="Message.pb.cc" />
     <ClCompile Include="mySqlDao.cpp" />
+    <ClCompile Include="mySqlMgr.cpp" />
     <ClCompile Include="mySqlPool.cpp" />
     <ClCompile Include="VerifyCodeGrpc.cpp" />
   </ItemGroup>
@@ -146,6 +147,7 @@
     <ClInclude Include="Message.grpc.pb.h" />
     <ClInclude Include="Message.pb.h" />
     <ClInclude Include="mySqlDao.h" />
+    <ClInclude Include="mySqlMgr.h" />
     <ClInclude Include="mySqlPool.h" />
     <ClInclude Include="Sington.h" />
     <ClInclude Include="VerifyCodeGrpc.h" />

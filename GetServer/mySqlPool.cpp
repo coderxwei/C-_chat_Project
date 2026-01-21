@@ -114,7 +114,7 @@ void mySqlPool::checkConnection()
 	while (failer_count > -0)
 	{
 
-		auto b_res = retConnection(timestamp);
+		auto b_res = reConnection(timestamp);
 		if (b_res)
 		{
 
@@ -128,6 +128,7 @@ void mySqlPool::checkConnection()
 
 	}
 }
+// 这个是表示重新连接对吗？
 bool mySqlPool::reConnection(long long timestamp)
 {
 	try
@@ -153,9 +154,10 @@ bool mySqlPool::reConnection(long long timestamp)
 	}
 	catch (sql::SQLException& e)
 	{
-		return false;
+		
 
 		Logging::Instance().LOG_ERROR("sql返回失败");
+		return false;
 	}
 }
 

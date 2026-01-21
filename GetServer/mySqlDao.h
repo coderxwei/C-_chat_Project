@@ -11,6 +11,7 @@ struct userInfo
 	std::string  name_;
 	std::string  email_;
 	std::string  password_;
+	
 
 };
 class mySqlDao
